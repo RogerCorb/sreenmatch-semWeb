@@ -114,5 +114,21 @@ public class Principal {
                                 " Data lançamento: " + e.getDataLancamento().format(formatador)
                 ));
 
+        // utilizamos um MAP pois estamos trabalhando com os dados INTEGER E DOUBLE de propriedades diferentes
+        /// Agrupamos todos os episodios para cada temporada equivalente e fizemo uma media das avaliações  //
+        //  Daquela temporada e depois imprimimos o resultado.
+        Map< Integer , Double> avaliacoesPorTemporada = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0 )
+                .collect(Collectors.groupingBy(Episodio::getTemporada,
+                        Collectors.averagingDouble(Episodio::getAvaliacao)));
+
+        System.out.println(avaliacoesPorTemporada);
+
+        // aqui utilizamos o método DoubleSumarySatistics que traz as estatísticas de
+        // acordo com o summarizingDouble() especificado
+        DoubleSummaryStatistics est = episodios.stream()
+                .filter(e -> e.getAvaliacao() > 0.0)
+                .collect(Collectors.summarizingDouble(Episodio::getAvaliacao));
+        System.out.println(est);
     }
 }
